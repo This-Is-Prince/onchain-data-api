@@ -23,6 +23,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Build docker image
         run: docker build -t thisisprince/$IMAGE_NAME:$IMAGE_TAG .
 
