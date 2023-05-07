@@ -33,6 +33,20 @@ const evmChainEndpoints: TEvmChainEndpointMap = [
 			'wss://moonriver.api.onfinality.io/public-ws',
 			'wss://moonriver.unitedbloc.com'
 		]
+	},
+	{
+		chain: 'moonbase',
+		chainId: 1287,
+		endpoints: [
+			'https://moonbase-alpha.public.blastapi.io',
+			'https://rpc.api.moonbase.moonbeam.network',
+			'https://moonbeam-alpha.api.onfinality.io/public',
+			'https://moonbase.unitedbloc.com',
+			'wss://moonbase-alpha.public.blastapi.io',
+			'wss://wss.api.moonbase.moonbeam.network',
+			'wss://moonbeam-alpha.api.onfinality.io/public-ws',
+			'wss://moonbase.unitedbloc.com',
+		]
 	}
 ]
 

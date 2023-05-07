@@ -5,10 +5,10 @@ import { getHeight } from "../utils/chain";
 
 
 const height: RequestHandler<{
-    time: string;
     chain: string;
 }> = async (req, res) => {
-    const { chain, time } = req.params;
+    const { chain } = req.params;
+    const { time } = req.query;
     let heightTime = {
         height: 0,
         time: 0

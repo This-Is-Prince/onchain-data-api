@@ -1,9 +1,9 @@
 import express from 'express';
-import { height } from '../controllers/height.controller';
+import { balance } from '../controllers/balance.controller';
 
 // creating router and merging params 
 const router = express.Router({ mergeParams: true });
 
-router.route('/').get(height);
+router.route('/').get(balance);
 
 export default router;

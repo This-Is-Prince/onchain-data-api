@@ -7,7 +7,8 @@ type TEvmProviderMap = {
 
 const evmProviderMap: TEvmProviderMap = {
     moonbeam: [],
-    moonriver: []
+    moonriver: [],
+	moonbase: []
 };
 
 function createProvider(url: string | ethers.FetchRequest | ethers.WebSocketLike | ethers.WebSocketCreator, network: ethers.Networkish) {

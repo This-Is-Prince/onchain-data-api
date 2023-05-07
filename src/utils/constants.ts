@@ -4,7 +4,8 @@ type TChains = {
 };
 type TEvmChains = {
 	moonbeam: 'moonbeam',
-	moonriver: 'moonriver'
+	moonriver: 'moonriver',
+	moonbase: 'moonbase'
 };
 
 const chains: TChains = {
@@ -14,7 +15,8 @@ const chains: TChains = {
 
 const evmChains: TEvmChains = {
 	moonbeam: 'moonbeam',
-	moonriver: 'moonriver'
+	moonriver: 'moonriver',
+	moonbase: 'moonbase'
 };
 
 const oneSecond = 1000;
@@ -29,7 +31,8 @@ const chainBlockTime: TChainBlockTimeMap = {
 	[chains.kusama]: sixSecond,
 	[chains.polkadot]: sixSecond,
 	[evmChains.moonriver]: twelveSecond,
-	[evmChains.moonbeam]: twelveSecond
+	[evmChains.moonbeam]: twelveSecond,
+	[evmChains.moonbase]: twelveSecond,
 };
 
 const symbols = {

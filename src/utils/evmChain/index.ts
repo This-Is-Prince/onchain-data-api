@@ -1,6 +1,7 @@
 import { getBlockTimeByHeight } from './query/blockTime';
 import { getBlockNumber, getHeightByTime,  } from './query/height';
 import { evmChains } from '../constants';
+import { getBalanceByAddressAndHeight } from './query/balance/getBalanceByAddressAndHeight';
 
 async function getEvmHeight(chain: keyof typeof evmChains, timestamp: number) {
 	if (!/^\d+$/.test(`${timestamp}`)) {
@@ -16,6 +17,12 @@ async function getEvmHeight(chain: keyof typeof evmChains, timestamp: number) {
 	});
 }
 
+async function getEvmBalance(chain: keyof typeof evmChains, address: string, blockHashOrHeight: string | number) {
+	const balance = await getBalanceByAddressAndHeight(chain, address, blockHashOrHeight);
+	return balance.toString();
+}
+
 export {
-	getEvmHeight
+	getEvmHeight,
+	getEvmBalance
 };

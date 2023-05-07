@@ -4,7 +4,7 @@ import express from 'express';
 const app = express();
 
 // Import Routers
-import heightRouter from './routes/height';
+import chainRouter from './routes/chain';
 import { createChainApis, createEvmChainProviders } from './utils/apis';
 
 // All the paths
@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 })
 
 // Routers paths
-app.use('/api/:chain', heightRouter);
+app.use('/api/:chain', chainRouter);
 
 const PORT = process.env.PORT || 3000;
 
