@@ -1,9 +1,7 @@
-// Copyright 2019-2025 @polka-labs/townhall authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
-
-import { chainBlockTime, evmChains } from '../constants';
-import { getBlockTimeByHeight } from './query/blockTime';
+import { chainBlockTime, evmChains } from '../../constants';
+import { WebSocketProvider, JsonRpcProvider } from 'ethers';
+import { getProvidersForEvmChain } from '../apis';
+import { getBlockTimeByHeight } from './blockTime';
 const blockNumberThreshold = 3;
 
 async function getExpected(chain: keyof typeof evmChains, lastHeightTime: {
@@ -61,6 +59,29 @@ async function getHeightByTime(chain: keyof typeof evmChains, targetTime: number
 	});
 }
 
+async function queryHeightFromOneProvider(provider: WebSocketProvider | JsonRpcProvider) {
+	const promises = [];
+	for (let i = 0; i < 2; i++) {
+		promises.push(provider.getBlockNumber());
+	}
+
+	return Promise.any(promises);
+}
+
+async function getBlockNumber(network: keyof typeof evmChains) {
+	const providers = getProvidersForEvmChain(network);
+
+	const promises = [];
+	for (const provider of providers) {
+		if (provider) {
+			promises.push(queryHeightFromOneProvider(provider));
+		}
+	}
+
+	return Promise.any(promises);
+}
+
 export {
+	getBlockNumber,
 	getHeightByTime
 };

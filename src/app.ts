@@ -5,7 +5,7 @@ const app = express();
 
 // Import Routers
 import heightRouter from './routes/height';
-import { createChainApis } from './utils/apis';
+import { createChainApis, createEvmChainProviders } from './utils/apis';
 
 // All the paths
 app.get('/', (req, res) => {
@@ -19,10 +19,11 @@ const PORT = process.env.PORT || 3000;
 
 const start = async () => {
     try {
-        await createChainApis();
         app.listen(PORT, () => {
             console.log(`Server is listening on port ${PORT}....`);
         })
+        createChainApis().then(() => {});
+        createEvmChainProviders().then(() => {});
     } catch (error) {
         console.log(error);
     }

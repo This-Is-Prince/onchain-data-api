@@ -1,20 +1,33 @@
-const chains = {
+type TChains = {
 	kusama: 'kusama',
 	polkadot: 'polkadot'
+};
+type TEvmChains = {
+	moonbeam: 'moonbeam',
+	moonriver: 'moonriver'
+};
+
+const chains: TChains = {
+	kusama: 'kusama',
+	polkadot: 'polkadot'
+};
+
+const evmChains: TEvmChains = {
+	moonbeam: 'moonbeam',
+	moonriver: 'moonriver'
 };
 
 const oneSecond = 1000;
 const sixSecond = 6 * oneSecond;
 const twelveSecond = 12 * oneSecond;
 
-const evmChains = Object.freeze({
-	moonbeam: 'moonbeam',
-	moonriver: 'moonriver'
-});
+type TChainBlockTimeMap = {
+	[k in keyof typeof chains | keyof typeof evmChains]: number
+};
 
-const chainBlockTime = {
-	kusama: sixSecond,
-	polkadot: sixSecond,
+const chainBlockTime: TChainBlockTimeMap = {
+	[chains.kusama]: sixSecond,
+	[chains.polkadot]: sixSecond,
 	[evmChains.moonriver]: twelveSecond,
 	[evmChains.moonbeam]: twelveSecond
 };

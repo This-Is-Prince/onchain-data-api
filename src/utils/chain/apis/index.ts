@@ -1,10 +1,11 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { rejectInTime } from '../utils/rejectInTime';
+import { chains } from '../../constants';
 
 const nodeTimeoutSeconds = 20;
 
-interface IChainApis {
-  [key: string]: INodeInfo[]
+type IChainApis = {
+  [k in keyof typeof chains]: INodeInfo[]
 }
 interface INodeInfo {
   api: ApiPromise;
@@ -21,9 +22,12 @@ interface INodeInfo {
  *   ]
  * }
  */
-const chainApis: IChainApis = {};
+const chainApis: IChainApis = {
+	kusama: [],
+	polkadot: []
+};
 
-async function reConnect(network: string, endpoint: string, logger = console) {
+async function reConnect(network: keyof typeof chains, endpoint: string, logger = console) {
 	const nowApis = chainApis[network] || [];
 
 	const index = nowApis.findIndex(({ endpoint: url }) => url === endpoint);
@@ -39,7 +43,7 @@ async function reConnect(network: string, endpoint: string, logger = console) {
 	logger.info(`Reconnect to ${ network } ${ endpoint }`);
 }
 
-async function createApi(network: string, endpoint: string, logger = console) {
+async function createApi(network: keyof typeof chains, endpoint: string, logger = console) {
 	const provider = new WsProvider(endpoint, 100);
 
 	let api;
@@ -70,14 +74,14 @@ async function createApi(network: string, endpoint: string, logger = console) {
 	chainApis[network] = [...nowApis, nodeInfo];
 }
 
-async function createApiInLimitTime(network: string, endpoint: string, logger = console) {
+async function createApiInLimitTime(network: keyof typeof chains, endpoint: string, logger = console) {
 	return Promise.race([
 		createApi(network, endpoint, logger),
 		rejectInTime(nodeTimeoutSeconds)
 	]);
 }
 
-async function createApiForChain(chain: string, endpoints: string[], logger = console) {
+async function createApiForChain(chain: keyof typeof chains, endpoints: string[], logger = console) {
 	for (const endpoint of endpoints) {
 		if (!endpoint) {
 			continue;
@@ -94,7 +98,7 @@ async function createApiForChain(chain: string, endpoints: string[], logger = co
 	}
 }
 
-function getApis(chain: string) {
+function getApis(chain: keyof typeof chains) {
 	return (chainApis[chain] || []).map(({ api }) => api);
 }
 

@@ -1,12 +1,8 @@
-// Copyright 2019-2025 @polka-labs/townhall authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
-
 import { ApiPromise } from '@polkadot/api';
 import { AnyNumber } from '@polkadot/types-codec/types';
 import { BlockNumber } from '@polkadot/types/interfaces';
 import { extractBlockTime } from './blockTime';
-import { chainBlockTime, twelveSecond } from '../constants';
+import { chainBlockTime, twelveSecond } from '../../constants';
 
 const blockNumberThreshold = 3;
 

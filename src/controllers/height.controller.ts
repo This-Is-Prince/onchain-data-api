@@ -1,7 +1,8 @@
 import { RequestHandler } from "express";
 import { chains, evmChains } from "../utils/constants";
-import * as evm from "../utils/evm";
+import { getEvmHeight } from "../utils/evmChain";
 import { getHeight } from "../utils/chain";
+
 
 const height: RequestHandler<{
     time: string;
@@ -12,12 +13,20 @@ const height: RequestHandler<{
         height: 0,
         time: 0
     };
-    if (Object.keys(evmChains).includes(chain)) {
-        heightTime = await evm.getHeight(chain as keyof typeof evmChains, Number(time));
-    } else {
-        heightTime = await getHeight(chain as keyof typeof chains, Number(time));
+    if (Object.keys(chains).includes(chain) === false && Object.keys(evmChains).includes(chain) === false) {
+        res.send(heightTime);
+        return;
     }
-    res.send(heightTime)
+    try {
+        if (Object.keys(evmChains).includes(chain)) {
+            heightTime = await getEvmHeight(chain as keyof typeof evmChains, Number(time));
+        } else {
+            heightTime = await getHeight(chain as keyof typeof chains, Number(time));
+        }
+        res.send(heightTime)
+    } catch (error) {
+        res.send(heightTime);
+    }
 };
 
 export {
