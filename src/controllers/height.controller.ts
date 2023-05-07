@@ -25,7 +25,7 @@ const height: RequestHandler<{
         }
         res.send(heightTime)
     } catch (error) {
-        res.send(heightTime);
+        res.send(error);
     }
 };
 

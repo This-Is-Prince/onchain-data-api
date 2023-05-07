@@ -2,6 +2,7 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import { rejectInTime } from '../utils/rejectInTime';
 import { chains } from '../../constants';
 import { createChainApis } from '../../apis';
+import { getEndpoints } from '../utils/chainEndpoints';
 
 const nodeTimeoutSeconds = 20;
 
@@ -73,6 +74,7 @@ async function createApi(network: keyof typeof chains, endpoint: string, logger 
 		endpoint
 	};
 	chainApis[network] = [...nowApis, nodeInfo];
+	console.log(`${ network }: ${ endpoint } created!`);
 }
 
 async function createApiInLimitTime(network: keyof typeof chains, endpoint: string, logger = console) {
@@ -90,7 +92,6 @@ async function createApiForChain(chain: keyof typeof chains, endpoints: string[]
 
 		try {
 			await createApiInLimitTime(chain, endpoint);
-			console.log(`${ chain }: ${ endpoint } created!`);
 		} catch (e) {
 			logger.info(
 				`Can not connected to ${ endpoint } in ${ nodeTimeoutSeconds } seconds, just disconnect it`
@@ -109,9 +110,23 @@ async function getApis(chain: keyof typeof chains) {
 		}
 	}
 	if (isAllDisconnected) {
-		await createChainApis();
+		const chainEndpoints = getEndpoints();
+		const chainEndpointsForChain = chainEndpoints.find((chainInfo) => chainInfo.chain === chain);
+		if (chainEndpointsForChain) {
+			const promises = [];
+			for (const endpoint of chainEndpointsForChain.endpoints) {
+				if (endpoint) {
+					promises.push(createApiInLimitTime(chain, endpoint));
+				}
+			}
+			try {
+				await Promise.any(promises);
+			} catch (error) {
+				console.info('unknown error', error);
+			}
+		}
 	}
-	return apis;
+	return (chainApis[chain] || []).map(({ api }) => api);
 }
 
 function logApiStatus(logger = console) {
