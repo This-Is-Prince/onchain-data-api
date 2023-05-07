@@ -1,6 +1,7 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { rejectInTime } from '../utils/rejectInTime';
 import { chains } from '../../constants';
+import { createChainApis } from '../../apis';
 
 const nodeTimeoutSeconds = 20;
 
@@ -98,8 +99,19 @@ async function createApiForChain(chain: keyof typeof chains, endpoints: string[]
 	}
 }
 
-function getApis(chain: keyof typeof chains) {
-	return (chainApis[chain] || []).map(({ api }) => api);
+async function getApis(chain: keyof typeof chains) {
+	const apis = (chainApis[chain] || []).map(({ api }) => api);
+	let isAllDisconnected = true;
+	for (const api of apis) {
+		if (api.isConnected) {
+			isAllDisconnected = false;
+			break;
+		}
+	}
+	if (isAllDisconnected) {
+		await createChainApis();
+	}
+	return apis;
 }
 
 function logApiStatus(logger = console) {

@@ -6,7 +6,7 @@ import { getHeightByTime } from "./query/queryHeight";
 
 async function getHeight(chain: keyof typeof chains, time: number) {
 
-	const apis = getApis(chain);
+	const apis = await getApis(chain);
 	if (apis.every((api) => !api.isConnected)) {
 		throw new Error('No apis connected');
 	}
