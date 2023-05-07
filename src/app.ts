@@ -1,11 +1,17 @@
 import dotenv from 'dotenv';
 dotenv.config();
+import cors from 'cors';
 import express from 'express';
 const app = express();
 
 // Import Routers
 import chainRouter from './routes/chain';
 import { createChainApis, createEvmChainProviders } from './utils/apis';
+
+// CORS
+app.use(cors({
+    origin: ['http://localhost:3000'] // Allow requests localhost:3000
+}));
 
 // All the paths
 app.get('/', (req, res) => {
