@@ -14,7 +14,7 @@ const balance: RequestHandler<{
         reserved: 0
     };
     if (Object.keys(chains).includes(chain) === false && Object.keys(evmChains).includes(chain) === false) {
-        res.send(balance);
+        res.json(balance);
         return;
     }
     try {
@@ -24,9 +24,9 @@ const balance: RequestHandler<{
         } else {
             balance = await getBalance(chain as keyof typeof chains, String(address), Number(height));
         }
-        res.send(balance)
+        res.json(balance)
     } catch (error) {
-        res.send(error);
+        res.json(error);
     }
 };
 

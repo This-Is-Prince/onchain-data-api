@@ -14,7 +14,7 @@ const height: RequestHandler<{
         time: 0
     };
     if (Object.keys(chains).includes(chain) === false && Object.keys(evmChains).includes(chain) === false) {
-        res.send(heightTime);
+        res.json(heightTime);
         return;
     }
     try {
@@ -23,9 +23,9 @@ const height: RequestHandler<{
         } else {
             heightTime = await getHeight(chain as keyof typeof chains, Number(time));
         }
-        res.send(heightTime)
+        res.json(heightTime)
     } catch (error) {
-        res.send(error);
+        res.json(error);
     }
 };
 
