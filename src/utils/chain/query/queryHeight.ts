@@ -55,7 +55,21 @@ async function getHeightByTime(chain: keyof typeof chainBlockTime, apis: ApiProm
 	time: number
 }> {
 	const { height, time } = lastHeightTime;
-	const blockTime = chainBlockTime[chain] || twelveSecond;
+	const blockTime = chainBlockTime[chain];
+
+	if (targetTime > time) {
+		// Calculate the estimated number of blocks
+		const timeDifference = targetTime - time;
+		const estimatedBlocks = Math.floor(timeDifference / blockTime);
+	  
+		// Calculate the estimated block height
+		const estimatedBlockHeight = height + estimatedBlocks;
+		return {
+			height: estimatedBlockHeight,
+			time: targetTime
+		};
+	}
+
 	const gap = Math.abs(targetTime - time);
 	if (gap <= blockNumberThreshold * blockTime) {
 		return lastHeightTime;
