@@ -10,7 +10,7 @@ import { createChainApis, createEvmChainProviders } from './utils/apis';
 
 // CORS
 app.use(cors({
-    origin: ['http://localhost:3000'] // Allow requests localhost:3000
+    origin: ['http://localhost:3000', 'https://townhallgov.com'] // Allow requests localhost:3000
 }));
 
 // All the paths
@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 // Routers paths
 app.use('/api/:chain', chainRouter);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 const start = async () => {
     try {
