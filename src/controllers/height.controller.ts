@@ -9,6 +9,7 @@ const height: RequestHandler<{
 }> = async (req, res) => {
     const { chain } = req.params;
     const { time } = req.query;
+    console.log(chain, time);
     let heightTime = {
         height: 0,
         time: 0
