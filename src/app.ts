@@ -10,7 +10,7 @@ import { createChainApis, createEvmChainProviders } from './utils/apis';
 
 // CORS
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://townhallgov.com'] // Allow requests localhost:3000
+    origin: ['http://localhost:3000', 'https://townhallgov.com',  'https://www.townhallgov.com'] // Allow requests localhost:3000
 }));
 
 // All the paths
